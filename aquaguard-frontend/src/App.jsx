@@ -1,11 +1,14 @@
 import './App.css'
+import Home from './components/Home/Home'
 import Loader from './components/Loader/Loader'
-import Parse_csv from './components/Parse_csv/Parse_csv.jsx'
+import Navbar from './components/Navbar/Navbar'
+
 function App() {
 
   return (
     <>
-      <Parse_csv/>
+      <Home/>
+      <Navbar/>
     </>
   )
 }
