@@ -321,7 +321,7 @@ const GitHubCsvParser = () => {
   };
 
   return (
-    <div className="flex flex-col h-screen bg-gray-100 p-4">
+    <div className="flex flex-col min-h-screen bg-gray-100 p-4">
       <h1 className="text-2xl font-bold mb-4 text-center">Sensor Data</h1>
       {lastUpdated && (
         <p className="text-sm text-gray-600 text-center mb-4">
