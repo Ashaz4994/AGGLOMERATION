@@ -10,8 +10,7 @@ const Navbar = () => {
         </div>
         <ul>
             <li>Home</li>
-            <li>About Us</li>
-            <li>Plot Graph</li>
+            <li>Visualize Trends</li>
         </ul>
     </nav>
   )

@@ -1,15 +1,14 @@
 body {
     margin: 0;
-    height: 100vh;
+    min-height: 100vh;
     /* background: linear-gradient(to bottom, #4facfe, #00f2fe); */
     /* background: linear-gradient(to bottom, rgb(71, 153, 212), rgb(27, 77, 153)); */
     background: center linear-gradient(0.425turn, rgb(1, 47, 112) 30%, rgb(174, 27, 108));
-    overflow: hidden;
     position: relative;
 }
 
 .bubble {
-    position: absolute;
+    position: fixed;
     bottom: -50px;
     width: 50px;
     height: 50px;
