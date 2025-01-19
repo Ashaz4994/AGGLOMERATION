@@ -94,7 +94,7 @@ const Dashboard = () => {
 
                 setTemp(curr[3]+"°C")
 
-                setLeakage(curr[4]==="Leak Detected")
+                setLeakage(curr[4]==="1")
             }
 
             doonce()
