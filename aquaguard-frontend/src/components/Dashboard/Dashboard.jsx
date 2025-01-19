@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import './Dashboard.css'
 import Papa from 'papaparse';
-
+import Message from '../Message/Message'
 
 
 const Dashboard = () => {
+    const [chatEnabled, setChatEnabled] = useState(false)
 
     const fetchData = async () => {
         const csvUrl = 'https://api.github.com/repos/Ashaz4994/AGGLOMERATION/contents/Data/Readings.csv?ref=main'
@@ -134,8 +135,11 @@ const Dashboard = () => {
                 <div>Water Flow Rate : {Rate}</div>
                 <div>Pressure : {Pressure}</div>
                 <div>Temperature : {Temp}</div>
-                <div>{Leakage?"Leakage Detected":"No Leakage Detected"}</div>
+                <div className={Leakage?"text-red-500":"text-green-500"}>{Leakage?"Leakage Detected":"No Leakage Detected"}</div>
             </div>
+            <div onClick={()=>{setChatEnabled(!chatEnabled)}} className="cursor-pointer chat-button overflow-hidden absolute right-32 bottom-20 flex"><img className='w-14 h-14 object-cover rounded-full' src="../../../public/bot.jpg" alt="" /></div>
+            {!chatEnabled && <span className='text-wrap text-green-500 absolute right-48 bottom-20 w-24'>Click to talk to ChatBot</span>}
+            {chatEnabled && <Message/>}
         </div>
     )
 }

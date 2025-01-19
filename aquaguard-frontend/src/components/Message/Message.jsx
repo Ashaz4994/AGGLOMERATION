@@ -70,7 +70,7 @@ const Chatbot = () => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen bg-gray-900 text-gray-200">
+    <div className="flex flex-col items-center justify-center bg-gray-900 text-gray-200 absolute right-48 bottom-20 rounded-lg">
       <div className="w-full max-w-md bg-gray-800 rounded-lg shadow-md overflow-hidden">
         {/* Chat Header */}
         <div className="bg-gray-700 text-white text-center py-4">
