@@ -51,8 +51,11 @@ const GitHubCsvParser = () => {
     temperatureAnomalies: [],
   });
 
-  const personalAccessToken = "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";
-  const csvUrl = `https://api.github.com/repos/Ashaz4994/AGGLOMERATION/contents/Data/Readings.csv?ref=main`;
+  // const personalAccessToken = "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";
+  // const csvUrl = `https://api.github.com/repos/Ashaz4994/AGGLOMERATION/contents/Data/Readings.csv?ref=main`;
+
+  const csvUrl = 'https://raw.githubusercontent.com/Ashaz4994/AGGLOMERATION/main/Data/Readings.csv';
+
 
   const showError = (message) => {
     setError(message);
@@ -61,44 +64,79 @@ const GitHubCsvParser = () => {
     }, 5000);
   };
 
+  // const fetchCsv = async () => {
+  //   try {
+  //     const response = await fetch(csvUrl, {
+  //       method: "GET",
+  //       headers: {
+  //         Authorization: `token ${personalAccessToken}`,
+  //         Accept: "application/vnd.github.v3.raw",
+  //       },
+  //       cache: "no-store",
+  //     });
+
+  //     if (!response.ok) {
+  //       throw new Error(`HTTP error! status: ${response.status}`);
+  //     }
+
+  //     const rawCsvData = await response.text();
+
+  //     return new Promise((resolve, reject) => {
+  //       Papa.parse(rawCsvData, {
+  //         header: true,
+  //         skipEmptyLines: true,
+  //         complete: (results) => {
+  //           if (results.errors.length > 0) {
+  //             reject(new Error("CSV parsing failed"));
+  //           } else {
+  //             resolve(results.data);
+  //           }
+  //         },
+  //         error: (error) => {
+  //           reject(error);
+  //         },
+  //       });
+  //     });
+  //   } catch (error) {
+  //     showError(`Failed to fetch or parse CSV: ${error.message}`);
+  //     throw error;
+  //   }
+  // };
   const fetchCsv = async () => {
-    try {
-      const response = await fetch(csvUrl, {
-        method: "GET",
-        headers: {
-          Authorization: `token ${personalAccessToken}`,
-          Accept: "application/vnd.github.v3.raw",
-        },
-        cache: "no-store",
-      });
-
-      if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
-      }
-
-      const rawCsvData = await response.text();
-
-      return new Promise((resolve, reject) => {
-        Papa.parse(rawCsvData, {
-          header: true,
-          skipEmptyLines: true,
-          complete: (results) => {
-            if (results.errors.length > 0) {
-              reject(new Error("CSV parsing failed"));
-            } else {
-              resolve(results.data);
-            }
-          },
-          error: (error) => {
-            reject(error);
-          },
+      try {
+        const response = await fetch(csvUrl, {
+          method: "GET",
+          cache: "no-store", // optional, prevents caching
         });
-      });
-    } catch (error) {
-      showError(`Failed to fetch or parse CSV: ${error.message}`);
-      throw error;
-    }
-  };
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
+        }
+
+        const rawCsvData = await response.text();
+
+        return new Promise((resolve, reject) => {
+          Papa.parse(rawCsvData, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+              if (results.errors.length > 0) {
+                reject(new Error("CSV parsing failed"));
+              } else {
+                resolve(results.data);
+              }
+            },
+            error: (error) => {
+              reject(error);
+            },
+          });
+        });
+      } catch (error) {
+        showError(`Failed to fetch or parse CSV: ${error.message}`);
+        throw error;
+      }
+    };
+
 
   const handleUpdate = async () => {
     try {

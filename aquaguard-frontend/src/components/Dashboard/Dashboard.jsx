@@ -6,47 +6,79 @@ import Message from '../Message/Message'
 
 const Dashboard = () => {
     const [chatEnabled, setChatEnabled] = useState(false)
-
     const fetchData = async () => {
-        const csvUrl = 'https://api.github.com/repos/Ashaz4994/AGGLOMERATION/contents/Data/Readings.csv?ref=main'
-        const personalAccessToken = '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'
-        try {
-          const response = await fetch(csvUrl, {
-            method: "GET",
-            headers: {
-              Authorization: `token ${personalAccessToken}`,
-              Accept: "application/vnd.github.v3.raw",
-            },
-            cache: "no-store",
-          });
-    
-          if (!response.ok) {
-            throw new Error(`HTTP error! status: ${response.status}`);
-          }
-    
-          const rawCsvData = await response.text();
-    
-          return new Promise((resolve, reject) => {
-            Papa.parse(rawCsvData, {
-              header: true,
-              skipEmptyLines: true,
-              complete: (results) => {
-                if (results.errors.length > 0) {
-                  reject(new Error("CSV parsing failed"));
-                } else {
-                  resolve(results.data);
-                }
-              },
-              error: (error) => {
-                reject(error);
-              },
-            });
-          });
-        } catch (error) {
-          console.error(`Failed to fetch or parse CSV: ${error.message}`);
-          throw error;
+      const csvUrl = 'https://raw.githubusercontent.com/Ashaz4994/AGGLOMERATION/main/Data/Readings.csv';
+      try {
+        const response = await fetch(csvUrl, {
+          method: "GET",
+          cache: "no-store",
+        });
+
+        if (!response.ok) {
+          throw new Error(`HTTP error! status: ${response.status}`);
         }
-      };
+
+        const rawCsvData = await response.text();
+
+        return new Promise((resolve, reject) => {
+          Papa.parse(rawCsvData, {
+            header: true,
+            skipEmptyLines: true,
+            complete: (results) => {
+              if (results.errors.length > 0) {
+                reject(new Error("CSV parsing failed"));
+              } else {
+                resolve(results.data);
+              }
+            },
+            error: (error) => reject(error),
+          });
+        });
+      } catch (error) {
+        console.error(`Failed to fetch or parse CSV: ${error.message}`);
+        throw error;
+      }
+    };
+    // const fetchData = async () => {
+    //     const csvUrl = 'https://raw.githubusercontent.com/Ashaz4994/AGGLOMERATION/main/Data/Readings.csv';
+    //     const personalAccessToken = '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'
+    //     try {
+    //       const response = await fetch(csvUrl, {
+    //         method: "GET",
+    //         headers: {
+    //           Authorization: `token ${personalAccessToken}`,
+    //           Accept: "application/vnd.github.v3.raw",
+    //         },
+    //         cache: "no-store",
+    //       });
+    
+    //       if (!response.ok) {
+    //         throw new Error(`HTTP error! status: ${response.status}`);
+    //       }
+    
+    //       const rawCsvData = await response.text();
+    
+    //       return new Promise((resolve, reject) => {
+    //         Papa.parse(rawCsvData, {
+    //           header: true,
+    //           skipEmptyLines: true,
+    //           complete: (results) => {
+    //             if (results.errors.length > 0) {
+    //               reject(new Error("CSV parsing failed"));
+    //             } else {
+    //               resolve(results.data);
+    //             }
+    //           },
+    //           error: (error) => {
+    //             reject(error);
+    //           },
+    //         });
+    //       });
+    //     } catch (error) {
+    //       console.error(`Failed to fetch or parse CSV: ${error.message}`);
+    //       throw error;
+    //     }
+    //   };
 
     function convertTo12HourFormat(time24) {
         // Split the input time (24-hour format) into hours, minutes, and seconds
