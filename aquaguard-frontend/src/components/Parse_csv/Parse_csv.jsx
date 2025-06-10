@@ -54,7 +54,7 @@ const GitHubCsvParser = () => {
   // const personalAccessToken = "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";
   // const csvUrl = `https://api.github.com/repos/Ashaz4994/AGGLOMERATION/contents/Data/Readings.csv?ref=main`;
 
-  const csvUrl = 'https://raw.githubusercontent.com/Ashaz4994/AGGLOMERATION/main/Data/Readings.csv';
+  const csvUrl = `https://raw.githubusercontent.com/Ashaz4994/AGGLOMERATION/main/Data/Readings.csv?cache_bust=${Date.now()}`;
 
 
   const showError = (message) => {
@@ -103,11 +103,16 @@ const GitHubCsvParser = () => {
   //   }
   // };
   const fetchCsv = async () => {
-      try {
-        const response = await fetch(csvUrl, {
-          method: "GET",
-          cache: "no-store", // optional, prevents caching
-        });
+  const apiUrl =
+    "https://api.github.com/repos/Ashaz4994/AGGLOMERATION/contents/Data/Readings.csv?ref=main";
+
+  try {
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        Accept: "application/vnd.github.v3.raw+json", // Just in case
+      },
+    });
 
         if (!response.ok) {
           throw new Error(`HTTP error! status: ${response.status}`);
@@ -142,7 +147,6 @@ const GitHubCsvParser = () => {
     try {
       const newData = await fetchCsv();
       setData(newData);
-
       const slicedData = newData.slice(-60); // Default to last 60 data points
       updateStats(slicedData);
       detectAnomalies(slicedData);
@@ -421,7 +425,7 @@ const GitHubCsvParser = () => {
        </div>
         {/* Predicted Stats */}
         <p className="m-auto font-bold mb-10 text-2xl">Prediction For next Minute</p>
-        <div class="flex justify-between ml-96 mr-96 mb-10">
+        <div className="flex justify-between ml-96 mr-96 mb-10">
         <div className="bg-blue-50 p-4 rounded shadow">
           <h3 className="font-semibold text-center">Predicted Temperature</h3>
           <p className="text-center text-lg">

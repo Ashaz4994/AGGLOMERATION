@@ -7,38 +7,39 @@ import Message from '../Message/Message'
 const Dashboard = () => {
     const [chatEnabled, setChatEnabled] = useState(false)
     const fetchData = async () => {
-      const csvUrl = 'https://raw.githubusercontent.com/Ashaz4994/AGGLOMERATION/main/Data/Readings.csv';
-      try {
-        const response = await fetch(csvUrl, {
-          method: "GET",
-          cache: "no-store",
-        });
+  const apiUrl =
+    "https://api.github.com/repos/Ashaz4994/AGGLOMERATION/contents/Data/Readings.csv?ref=main";
 
-        if (!response.ok) {
-          throw new Error(`HTTP error! status: ${response.status}`);
-        }
+  try {
+    const response = await fetch(apiUrl, {
+      method: "GET",
+      headers: {
+        Accept: "application/vnd.github.v3.raw+json", // Just in case
+      },
+    });
 
-        const rawCsvData = await response.text();
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+    const rawCsvData = await response.text();
 
-        return new Promise((resolve, reject) => {
-          Papa.parse(rawCsvData, {
-            header: true,
-            skipEmptyLines: true,
-            complete: (results) => {
-              if (results.errors.length > 0) {
-                reject(new Error("CSV parsing failed"));
-              } else {
-                resolve(results.data);
-              }
-            },
-            error: (error) => reject(error),
-          });
-        });
-      } catch (error) {
-        console.error(`Failed to fetch or parse CSV: ${error.message}`);
-        throw error;
-      }
-    };
+    return new Promise((resolve, reject) => {
+      Papa.parse(rawCsvData, {
+        header: true,
+        skipEmptyLines: true,
+        complete: ({ data, errors }) => {
+          if (errors.length) reject(new Error("CSV parsing failed"));
+          else resolve(data);
+        },
+        error: (err) => reject(err),
+      });
+    });
+  } catch (error) {
+    console.error(`Failed to fetch or parse CSV: ${error.message}`);
+    throw error;
+  }
+};
+
     // const fetchData = async () => {
     //     const csvUrl = 'https://raw.githubusercontent.com/Ashaz4994/AGGLOMERATION/main/Data/Readings.csv';
     //     const personalAccessToken = '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'
@@ -113,7 +114,7 @@ const Dashboard = () => {
                 let temp = await fetchData()
                 let ind = temp.length - 2
                 let curr = Object.values(temp[ind])
-                console.log(curr)
+                // console.log(temp)
 
                 setDate1(curr[0].split(" ")[0])
                 let tim = curr[0].split(" ")[1]
@@ -135,7 +136,7 @@ const Dashboard = () => {
                 let temp = await fetchData()
                 let ind = temp.length - 2
                 let curr = Object.values(temp[ind])
-                console.log(curr)
+                console.log(temp)
 
                 setDate1(curr[0].split(" ")[0])
                 let tim = curr[0].split(" ")[1]
@@ -149,7 +150,7 @@ const Dashboard = () => {
                 setTemp(curr[3]+"°C")
 
                 setLeakage(curr[4]=="1")
-            },6000)
+            },10000)
 
             return ()=>{
                 clearInterval(interval)
