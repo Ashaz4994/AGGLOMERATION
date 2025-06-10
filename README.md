@@ -2,7 +2,7 @@
 
 **Simulated IoT-based Water-Management System**
 
-### [🎥 Watch demo video](/DemoAquaGuard.mp4)
+### [🎥 Watch demo video](https://drive.google.com/file/d/11u2Th0181eiBgwcgyfJm1UyhuRweRlhz/view?usp=sharing)
 
 ---
 
